@@ -72,6 +72,6 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test": "pest"
+        "test": "pest --coverage-html tests/coverage"
     }
 }
