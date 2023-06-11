@@ -1,0 +1,19 @@
+<?php declare(strict_types=1);
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\$STUDLY_NAME$\Http\Controllers\Api;
+
+/** # API Routes of $STUDLY_NAME$ module */
+Route::prefix(config('$LOWER_NAME$.prefix'))->group(function() {
+
+    /** ## Unprotected endpoints */
+
+    /** ## Protected endpoints */
+    Route::middleware('auth:api')->group(function() {
+
+        Route::get('/$LOWER_NAME$', static fn(Request $request) => $request->user());
+
+    });
+
+});
