@@ -31,4 +31,20 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'google' => [
+        'maps'      => [
+            'key' => env('GOOGLE_MAPS_API_KEY'),
+        ],
+        'recaptcha' => [
+            'v2' => [
+                'sitekey' => env('GOOGLE_RECAPTCHA_SITEKEY_V2'),
+                'secret'  => env('GOOGLE_RECAPTCHA_SECRET_V2'),
+            ],
+            'v3' => [
+                'sitekey' => env('GOOGLE_RECAPTCHA_SITEKEY_V3'),
+                'secret'  => env('GOOGLE_RECAPTCHA_SECRET_V3'),
+            ],
+        ],
+    ],
+
 ];

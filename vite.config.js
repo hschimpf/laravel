@@ -24,9 +24,9 @@ export default async ({mode}) => {
             `modules/${module}/resources/assets/js`,
         ];
         for (const folder of folders) {
-            const resources = await fs.readdir(`${folder}/`);
+            const resources = await fs.readdir(`${folder}/`, { recursive: true });
             resources.forEach(asset => {
-                if (asset.endsWith('.scss') || asset.endsWith('.ts')) {
+                if (!asset.startsWith('_') && asset.endsWith('.scss') || asset.endsWith('.ts')) {
                     assets.push(`${folder}/${asset}`);
                 }
             })
