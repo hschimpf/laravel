@@ -1,6 +1,7 @@
 /node_modules
 /storage/*.key
 /vendor
+/.serverless
 /.phpunit.cache
 /.fleet
 /.idea
