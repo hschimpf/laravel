@@ -1,0 +1,141 @@
+service: ${env:SLS_SERVICE}
+
+useDotenv: true
+
+provider:
+  name: aws
+  region: us-east-1
+  architecture: arm64
+  memorySize: 512
+  environment:
+    # Bref settings
+    BREF_BINARY_RESPONSES: true
+    # Laravel settings
+    APP_NAME: ${env:APP_NAME}
+    APP_URL: 'https://${self:custom.domain}'
+    APP_KEY: ${env:APP_KEY}
+    APP_ENV: ${sls:stage}
+    APP_DEBUG: ${self:custom.debug}
+    MAINTENANCE_MODE: ${param:maintenance, null}
+    # Laravel Database (MySQL)
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_DATABASE: ${env:DB_DATABASE, self:custom.UUID}
+    DB_USERNAME: ${env:DB_USERNAME, self:custom.UUID}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    # Laravel Cache, Session, and Queue
+    CACHE_DRIVER: dynamodb
+    DYNAMODB_CACHE_TABLE: !Ref CacheTable
+    SESSION_DRIVER: dynamodb
+    QUEUE_CONNECTION: sqs
+    SQS_QUEUE: ${construct:jobs.queueUrl}
+    SQS_REGION: ${self:provider.region}
+    # Laravel storage (S3)
+    FILESYSTEM_DISK: s3
+    AWS_BUCKET: !Ref Storage
+    FILESYSTEM_DISK_PUBLIC: s3_public
+    AWS_BUCKET_PUBLIC: !Ref StoragePublic
+  logRetentionInDays: 90
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
+  iam:
+    role:
+      statements:
+        # Laravel Storage (S3)
+        - Effect: Allow
+          Action: s3:*
+          Resource:
+            - !Sub '${Storage.Arn}'
+            - !Sub '${Storage.Arn}/*'
+            - !Sub '${StoragePublic.Arn}'
+            - !Sub '${StoragePublic.Arn}/*'
+        # Laravel Cache (DynamoDB)
+        - Effect: Allow
+          Resource: !GetAtt CacheTable.Arn
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+  deploymentBucket:
+    blockPublicAccess: true
+    name: ${self:service}.deploys
+
+plugins:
+  - ./vendor/bref/bref
+  - serverless-lift
+
+functions:
+  web:
+    handler: public/index.php
+    runtime: php-81-fpm
+    timeout: 28
+    domain: ${self:custom.domain}
+    certificate: ${self:custom.certificateArn}
+    events:
+      - httpApi: '*'
+    reservedConcurrency: 250
+  artisan:
+    handler: artisan
+    runtime: php-81-console
+    timeout: 900
+    events:
+      - schedule:
+          name: '${self:custom.UUID}-artisan-schedule-run'
+          rate: rate(1 minute)
+          input:
+            cli: "schedule:run >>/dev/stderr"
+
+constructs:
+  website:
+    type: server-side-website
+    assets:
+      '/js/*': public/js
+      '/css/*': public/css
+      '/build/*': public/build
+      '/robots.txt': public/robots.txt
+  jobs:
+    type: queue
+    worker:
+      handler: Bref\LaravelBridge\Queue\QueueHandler
+      runtime: php-81
+      timeout: 300
+      reservedConcurrency: 25
+
+custom:
+  UUID: ${self:service}-${self:provider.stage}
+  domain: ${self:custom.switch.${self:provider.stage}.domainName, '${self:custom.switch.default.domainName}'}
+  certificateArn: ${certificate(${self:custom.customCertificate.certificateName}):CertificateArn}
+  debug: ${self:custom.switch.${self:provider.stage}.debug, '${self:custom.switch.default.debug}'}
+  env: ${self:custom.switch.${self:provider.stage}.env, '${self:custom.switch.default.env}'}
+
+  switch:
+    baseDomain: ${env:SLS_BASE_DOMAIN}
+    default:
+      domainName: ${self:custom.switch.baseDomain}
+      env: 'local'
+      debug: 'true'
+    production:
+      domainName: ${self:custom.switch.baseDomain}
+      env: 'production'
+      debug: 'false'
+  customCertificate:
+    certificateName: ${self:custom.domain}
+    hostedZoneNames: ${env:SLS_HOSTED_ZONE}
+    region: us-east-1
+    rewriteRecords: false
+
+resources:
+  - ${file(serverless/resources.yml)}
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!public/storage'
+    - '!resources/assets/**'
+    - '!storage/**'
+    - '!tests/**'
