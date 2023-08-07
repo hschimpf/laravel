@@ -1,0 +1,53 @@
+Resources:
+  # Laravel Storage
+  Storage:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      AccessControl: Private
+      BucketName: "${self:custom.UUID}-storage"
+
+  # Laravel Public Storage
+  StoragePublic:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName: "${self:custom.UUID}-assets"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+      CorsConfiguration:
+        CorsRules:
+          - AllowedMethods:
+              - GET
+              - HEAD
+            AllowedOrigins:
+              - 'https://${self:custom.domain}'
+
+  # The policy allows read access to the assets on the StoragePublic bucket
+  StoragePublicPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: StoragePublic
+    Properties:
+      Bucket: !Ref StoragePublic
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Join ['', ['arn:aws:s3:::', !Ref StoragePublic, '/*']]
+
+  CacheTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.UUID}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
