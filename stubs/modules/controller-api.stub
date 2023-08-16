@@ -1,0 +1,31 @@
+<?php declare(strict_types=1);
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+
+final class $CLASS$ extends Controller {
+
+    public function index() {
+        // TODO
+    }
+
+    public function store(Request $request) {
+        // TODO
+    }
+
+    public function show($id) {
+        // TODO
+    }
+
+    public function update(Request $request, $id) {
+        // TODO
+    }
+
+    public function destroy($id) {
+        // TODO
+    }
+
+}

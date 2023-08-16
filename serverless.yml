@@ -1,0 +1,146 @@
+service: ${env:SLS_SERVICE, 'app'}
+
+provider:
+  name: aws
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+
+  architecture: arm64
+  memorySize: 512
+  logRetentionInDays: 90
+
+  deploymentBucket:
+    blockPublicAccess: true
+    name: ${self:service}.deploys
+
+  environment:
+    # Bref settings
+    BREF_BINARY_RESPONSES: true
+
+    # Laravel settings
+    APP_NAME: ${env:APP_NAME}
+    APP_URL: 'https://${param:domain}'
+    APP_KEY: ${env:APP_KEY}
+    APP_ENV: ${param:env}
+    APP_DEBUG: ${param:debug}
+    MAINTENANCE_MODE: ${param:maintenance, null}
+
+    # Laravel Database (MySQL)
+    DB_HOST: ${env:DB_HOST, null}
+    DB_PORT: ${env:DB_PORT, null}
+    DB_DATABASE: ${env:DB_DATABASE, null}
+    DB_USERNAME: ${env:DB_USERNAME, null}
+    DB_PASSWORD: ${env:DB_PASSWORD, null}
+
+    # Laravel Cache, Session, and Queue
+    CACHE_DRIVER: dynamodb
+    DYNAMODB_CACHE_TABLE: !Ref CacheTable
+    SESSION_DRIVER: dynamodb
+    QUEUE_CONNECTION: sqs
+    SQS_QUEUE: ${construct:jobs.queueUrl}
+    SQS_REGION: ${self:provider.region}
+
+    # Laravel storage (S3)
+    FILESYSTEM_DISK: s3
+    AWS_BUCKET: ${construct:storage.bucketName}
+    FILESYSTEM_DISK_PUBLIC: s3_public
+    AWS_BUCKET_PUBLIC: ${construct:assets.assetsBucketName}
+
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
+
+  iam:
+    role:
+      statements:
+        # Laravel Cache (DynamoDB)
+        - Effect: Allow
+          Resource: !GetAtt CacheTable.Arn
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+
+plugins:
+  - ./vendor/bref/bref
+  - serverless-lift
+
+functions:
+  laravel:
+    handler: public/index.php
+    runtime: ${param:php}-fpm
+    timeout: 28
+    events:
+      - httpApi: '*'
+    reservedConcurrency: 250
+
+  artisan:
+    handler: artisan
+    runtime: ${param:php}-console
+    timeout: 900
+    events:
+      - schedule:
+          name: '${param:UUID}-artisan-schedule-run'
+          rate: rate(1 minute)
+          input:
+            cli: "schedule:run >>/dev/stderr"
+
+constructs:
+  assets:
+    type: server-side-website
+    domain: ${param:domain}
+    certificate: ${param:certificateArn}
+    assets:
+#      '/js/*': public/js
+#      '/css/*': public/css
+      '/build/*': public/build
+      '/robots.txt': public/robots.txt
+    extensions:
+      bucket:
+        Properties:
+          BucketName: "${param:UUID}-assets"
+
+  storage:
+    type: storage
+    extensions:
+      bucket:
+#        DeletionPolicy: Retain
+        Properties:
+          BucketName: "${param:UUID}-storage"
+          AccessControl: Private
+
+  jobs:
+    type: queue
+    worker:
+      handler: Bref\LaravelBridge\Queue\QueueHandler
+      runtime: ${param:php}
+      timeout: 300
+      reservedConcurrency: 25
+
+params:
+  default:
+    UUID: ${self:service}-${sls:stage}
+    php: php-${env:BREF_PHP_VERSION, '82'}
+    domain: ${sls:stage}.${env:SLS_BASE_DOMAIN}
+    certificateArn: ${env:SLS_CERTIFICATE_ARN}
+    env: 'staging'
+    debug: 'true'
+  production:
+    domain: ${env:SLS_BASE_DOMAIN}
+    env: 'production'
+    debug: 'false'
+
+resources:
+  - ${file(serverless/resources/cache.yml)}
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!public/storage'
+    - '!resources/assets/**'
+    - '!storage/**'
+    - '!tests/**'

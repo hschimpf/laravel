@@ -1,0 +1,17 @@
+<?php declare(strict_types=1);
+
+use Illuminate\Support\Facades\Route;
+use Modules\$STUDLY_NAME$\Http\Controllers;
+
+/** # Web Routes of $STUDLY_NAME$ module */
+Route::prefix(config('$LOWER_NAME$.prefix'))->group(function() {
+
+    /** ## Unprotected routes */
+    Route::get('/', [ Controllers\$STUDLY_NAME$Controller::class, 'index' ]);
+
+    /** ## Protected routes */
+    Route::middleware('auth:web')->group(function() {
+        // TODO:
+    });
+
+});
