@@ -13,6 +13,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Nwidart\Modules\Laravel\Module;
 
 uses(Tests\TestCase::class, RefreshDatabase::class)
     ->in('Feature', 'Unit');
@@ -49,6 +50,14 @@ expect()->extend('toBeSameDay', function(
 
     return $this->toBe(true,
         message: sprintf('Failed asserting that %s is same day as %s.', $value, $date->format($format)));
+});
+
+expect()->extend('toHaveUnitTests', function() {
+    $module = $this->value;
+
+    $this->value = count(glob(sprintf('%s/Tests/*/*.php', $module->getPath()))) > 0;
+
+    return $this->toBeTrue(sprintf('Module "%s" doesn\'t have any unit test', $module->getName()));
 });
 
 /*
