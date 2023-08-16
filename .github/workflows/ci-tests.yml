@@ -1,0 +1,51 @@
+name: CI Tests
+
+on:
+  workflow_call:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: [8.1, 8.2]
+
+    name: Run Tests on PHP ${{ matrix.php }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        env:
+          phpts: ts
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, parallel
+          ini-values: opcache.enable_cli=1, opcache.enable=1, opcache.jit_buffer_size=64M, opcache.jit=1205, opcache.enable_file_override=1, opcache.max_accelerated_files=4000, opcache.validate_timestamps=0, opcache.interned_strings_buffer=8
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: --prefer-dist --optimize-autoloader --no-suggest
+
+      - name: Generate app key
+        run: echo "APP_KEY=$(php artisan --no-ansi key:generate --show)" >> $GITHUB_ENV
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Execute tests
+        run: php artisan test
