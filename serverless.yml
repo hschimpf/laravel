@@ -1,7 +1,5 @@
 service: ${env:SLS_SERVICE, 'app'}
 
-useDotenv: true
-
 provider:
   name: aws
   region: us-east-1
@@ -28,11 +26,11 @@ provider:
     MAINTENANCE_MODE: ${param:maintenance, null}
 
     # Laravel Database (MySQL)
-    DB_HOST: ${env:DB_HOST}
-    DB_PORT: ${env:DB_PORT}
-    DB_DATABASE: ${env:DB_DATABASE, param:UUID}
-    DB_USERNAME: ${env:DB_USERNAME, param:UUID}
-    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_HOST: ${env:DB_HOST, null}
+    DB_PORT: ${env:DB_PORT, null}
+    DB_DATABASE: ${env:DB_DATABASE, null}
+    DB_USERNAME: ${env:DB_USERNAME, null}
+    DB_PASSWORD: ${env:DB_PASSWORD, null}
 
     # Laravel Cache, Session, and Queue
     CACHE_DRIVER: dynamodb
@@ -74,7 +72,7 @@ plugins:
 functions:
   laravel:
     handler: public/index.php
-    runtime: php-81-fpm
+    runtime: ${param:php}-fpm
     timeout: 28
     events:
       - httpApi: '*'
@@ -82,7 +80,7 @@ functions:
 
   artisan:
     handler: artisan
-    runtime: php-81-console
+    runtime: ${param:php}-console
     timeout: 900
     events:
       - schedule:
@@ -119,13 +117,14 @@ constructs:
     type: queue
     worker:
       handler: Bref\LaravelBridge\Queue\QueueHandler
-      runtime: php-81
+      runtime: ${param:php}
       timeout: 300
       reservedConcurrency: 25
 
 params:
   default:
     UUID: ${self:service}-${sls:stage}
+    php: php-${env:BREF_PHP_VERSION, '82'}
     domain: ${sls:stage}.${env:SLS_BASE_DOMAIN}
     certificateArn: ${env:SLS_CERTIFICATE_ARN}
     env: 'staging'
