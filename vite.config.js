@@ -6,7 +6,7 @@ import {defineConfig, loadEnv} from 'vite';
 export default async ({mode}) => {
     process.env = {...process.env, ...loadEnv(mode, process.cwd())};
 
-    const host = (process.env.APP_URL ?? 'localhost').replace(/http(s)?:\/\//, '');
+    const host = (process.env.VITE_APP_URL ?? 'localhost').replace(/http(s)?:\/\//, '');
     const https = process.env.VITE_SSL_KEY && process.env.VITE_SSL_CERT ? {
         key: await fs.readFile(process.env.VITE_SSL_KEY),
         cert: await fs.readFile(process.env.VITE_SSL_CERT),
