@@ -15,12 +15,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./modules/*</directory>
-        </include>
-    </coverage>
+    <coverage/>
 
     <php>
         <env name="APP_ENV" value="testing"/>
