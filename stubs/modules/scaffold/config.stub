@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
 return [
-    'name'   => '$STUDLY_NAME$',
-    'prefix' => env('MODULE_$STUDLY_NAME$_PREFIX'),
-    'guard'  => env('MODULE_$STUDLY_NAME$_GUARD'),
+    'name'       => '$STUDLY_NAME$',
+    'prefix'     => env('MODULE_$STUDLY_NAME$_PREFIX'),
+    'api-prefix' => env('MODULE_$STUDLY_NAME$_API_PREFIX'),
+    'guard'      => env('MODULE_$STUDLY_NAME$_GUARD'),
 ];

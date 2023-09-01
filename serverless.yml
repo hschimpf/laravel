@@ -18,9 +18,9 @@ provider:
     BREF_BINARY_RESPONSES: true
 
     # Laravel settings
-    APP_NAME: ${env:APP_NAME}
+    APP_NAME: ${env:APP_NAME, 'Laravel'}
     APP_URL: 'https://${param:domain}'
-    APP_KEY: ${env:APP_KEY}
+    APP_KEY: ${env:APP_KEY, null}
     APP_ENV: ${param:env}
     APP_DEBUG: ${param:debug}
     MAINTENANCE_MODE: ${param:maintenance, null}
