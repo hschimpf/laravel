@@ -38,7 +38,7 @@ provider:
     SESSION_DRIVER: dynamodb
     QUEUE_CONNECTION: sqs
     SQS_QUEUE: ${construct:jobs.queueUrl}
-    SQS_REGION: ${self:provider.region}
+    SQS_REGION: ${aws:region}
 
     # Laravel storage (S3)
     FILESYSTEM_DISK: s3
