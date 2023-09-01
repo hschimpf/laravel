@@ -62,4 +62,4 @@ jobs:
       - name: Deploy to development environment
         uses: serverless/github-action@v3
         with:
-          args: deploy --stage=production
+          args: deploy --region=${{ secrets.AWS_REGION || 'us-east-1' }} --stage=production
