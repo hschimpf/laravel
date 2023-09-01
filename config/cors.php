@@ -1,6 +1,4 @@
-<?php
-
-return [
+<?php return [
 
     /*
     |--------------------------------------------------------------------------
@@ -15,20 +13,24 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [ 'api/*', 'sanctum/csrf-cookie' ],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => [ '*' ],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => array_reduce([ 'http', 'https' ], static fn($carry, $protocol) =>
+        array_merge($carry, array_map(
+            static fn($domain) => "$protocol://$domain",
+            explode(',', env('CORS_ALLOWED_ORIGINS', ''))
+        )), []),
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [ '*' ],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
