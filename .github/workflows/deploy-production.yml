@@ -26,6 +26,7 @@ jobs:
       SLS_CERTIFICATE_ARN: ${{ secrets.SLS_CERTIFICATE_ARN }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      VITE_GOOGLE_RECAPTCHA_SITE_KEY_V3: ${{ secrets.GOOGLE_RECAPTCHA_SITE_KEY_V3 }}
 
     steps:
       - uses: actions/checkout@v3
