@@ -10,7 +10,7 @@ Route::prefix(config('$LOWER_NAME$.prefix'))->group(function() {
     Route::get('/', [ Controllers\$STUDLY_NAME$Controller::class, 'index' ]);
 
     /** ## Protected routes */
-    Route::middleware('auth:web')->group(function() {
+    Route::middleware('auth:'.config('$LOWER_NAME$.guard'))->group(function() {
         // TODO:
     });
 
