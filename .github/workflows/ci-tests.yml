@@ -11,12 +11,30 @@ jobs:
 
     strategy:
       matrix:
-        php: [8.1, 8.2]
+        php: [8.1, 8.2, 8.3]
 
     name: Run Tests on PHP ${{ matrix.php }}
+    env:
+      extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, parallel
+      key: extensions-cache-00
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}-${{ env.phpts }}
+          restore-keys: ${{ steps.extcache.outputs.key }}-${{ env.phpts }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -24,7 +42,7 @@ jobs:
           phpts: ts
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, parallel
+          extensions: ${{ env.extensions }}
           ini-values: opcache.enable_cli=1, opcache.enable=1, opcache.jit_buffer_size=64M, opcache.jit=1205, opcache.enable_file_override=1, opcache.max_accelerated_files=4000, opcache.validate_timestamps=0, opcache.interned_strings_buffer=8
           coverage: none
 
@@ -48,4 +66,4 @@ jobs:
         run: npm run build
 
       - name: Execute tests
-        run: php artisan test
+        run: php artisan test --parallel
