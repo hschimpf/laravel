@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import laravel from 'laravel-vite-plugin';
-import path from "path";
+import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 
 export default async ({mode}) => {
@@ -45,17 +45,25 @@ export default async ({mode}) => {
         plugins: [
             laravel({
                 input: assets,
-                refresh: [
-                    'resources/views/**',
-                    'modules/**/resources/views/**',
-                    'modules/**/resources/assets/css/**',
-                    'modules/**/resources/assets/js/**',
-                ],
+                refresh: true,
             }),
+            {
+                name: 'blade',
+                handleHotUpdate({ file, server }) {
+                    if (file.endsWith('.blade.php')) {
+                        server.ws.send({
+                            type: 'full-reload',
+                            path: '*',
+                        });
+                    }
+                }
+            }
         ],
         resolve: {
             alias: {
                 '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
+                '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
+                'ziggy-js': path.resolve(__dirname, 'vendor/tightenco/ziggy'),
             }
         },
     });
