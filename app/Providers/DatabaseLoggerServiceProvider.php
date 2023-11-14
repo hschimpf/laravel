@@ -5,10 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
-final class AppDatabaseLoggerServiceProvider extends ServiceProvider {
+final class DatabaseLoggerServiceProvider extends ServiceProvider {
 
     public function boot(): void {
-        if (config('app.debug')) {
+        if (config('app.env') === 'local' && config('app.debug')) {
             $log_date = date('Y-m-d');
             $start_time = microtime(true);
             $pid = substr(md5(getmypid().$start_time.random_bytes(10)), 10, 10);

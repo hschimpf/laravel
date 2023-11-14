@@ -1,4 +1,6 @@
-<?php return [
+<?php declare(strict_types=1);
+
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -30,17 +32,18 @@
     ],
 
     'google' => [
-        'maps'      => [
+        'maps'        => [
             'key' => env('GOOGLE_MAPS_API_KEY'),
         ],
-        'recaptcha' => [
-            'v2' => [
-                'sitekey' => env('GOOGLE_RECAPTCHA_SITEKEY_V2'),
-                'secret'  => env('GOOGLE_RECAPTCHA_SECRET_V2'),
+        'recaptcha'   => [
+            'uri' => 'https://www.google.com/recaptcha/api/siteverify',
+            'v2'  => [
+                'site-key' => env('GOOGLE_RECAPTCHA_SITE_KEY_V2'),
+                'secret'   => env('GOOGLE_RECAPTCHA_SECRET_V2'),
             ],
-            'v3' => [
-                'sitekey' => env('GOOGLE_RECAPTCHA_SITEKEY_V3'),
-                'secret'  => env('GOOGLE_RECAPTCHA_SECRET_V3'),
+            'v3'  => [
+                'site-key' => env('GOOGLE_RECAPTCHA_SITE_KEY_V3'),
+                'secret'   => env('GOOGLE_RECAPTCHA_SECRET_V3'),
             ],
         ],
         'tag-manager' => [
