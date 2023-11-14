@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
 |--------------------------------------------------------------------------
@@ -12,11 +12,13 @@
 */
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Nwidart\Modules\Laravel\Module;
 
-uses(Tests\TestCase::class, RefreshDatabase::class)
-    ->in('Feature', 'Unit');
+uses(Tests\TestCase::class)->in(
+    'Unit', 'Feature',
+    __DIR__.'/../modules/*/Tests/Unit',
+    __DIR__.'/../modules/*/Tests/Feature',
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +55,7 @@ expect()->extend('toBeSameDay', function(
 });
 
 expect()->extend('toHaveUnitTests', function() {
+    /** @var Module $module */
     $module = $this->value;
 
     $this->value = count(glob(sprintf('%s/Tests/*/*.php', $module->getPath()))) > 0;
