@@ -1,5 +1,7 @@
 service: ${env:SLS_SERVICE, 'app'}
 
+useDotenv: true
+
 provider:
   name: aws
   region: us-east-1
@@ -11,28 +13,21 @@ provider:
 
   deploymentBucket:
     blockPublicAccess: true
-    name: ${self:service}.deploys
+    name: ${self:service}.${aws:region}.deploys
 
   environment:
-    # Bref settings
+    # Application Settings
     BREF_BINARY_RESPONSES: true
 
     # Laravel settings
     APP_NAME: ${env:APP_NAME, 'Laravel'}
     APP_URL: 'https://${param:domain}'
-    APP_KEY: ${env:APP_KEY, null}
+    APP_KEY: bref-ssm:/${param:UUID}/APP_KEY
     APP_ENV: ${param:env}
     APP_DEBUG: ${param:debug}
     MAINTENANCE_MODE: ${param:maintenance, null}
 
-    # Laravel Database (MySQL)
-    DB_HOST: ${env:DB_HOST, null}
-    DB_PORT: ${env:DB_PORT, null}
-    DB_DATABASE: ${env:DB_DATABASE, null}
-    DB_USERNAME: ${env:DB_USERNAME, null}
-    DB_PASSWORD: ${env:DB_PASSWORD, null}
-
-    # Laravel Cache, Session, and Queue
+    # Cache, Session, and Queue Settings
     CACHE_DRIVER: dynamodb
     DYNAMODB_CACHE_TABLE: !Ref CacheTable
     SESSION_DRIVER: dynamodb
@@ -40,11 +35,31 @@ provider:
     SQS_QUEUE: ${construct:jobs.queueUrl}
     SQS_REGION: ${aws:region}
 
-    # Laravel storage (S3)
+    # Storage Settings
     FILESYSTEM_DISK: s3
     AWS_BUCKET: ${construct:storage.bucketName}
     FILESYSTEM_DISK_PUBLIC: s3_public
     AWS_BUCKET_PUBLIC: ${construct:assets.assetsBucketName}
+
+    # Database Settings
+    DB_HOST: bref-ssm:/${param:UUID}/DB_HOST
+    DB_PORT: bref-ssm:/${param:UUID}/DB_PORT,3306
+    DB_DATABASE: bref-ssm:/${param:UUID}/DB_DATABASE
+    DB_USERNAME: bref-ssm:/${param:UUID}/DB_USERNAME
+    DB_PASSWORD: bref-ssm:/${param:UUID}/DB_PASSWORD
+
+    # Mailer Settings
+    MAIL_HOST: bref-ssm:/${param:UUID}/MAIL_HOST
+    MAIL_PORT: bref-ssm:/${param:UUID}/MAIL_PORT
+    MAIL_USERNAME: bref-ssm:/${param:UUID}/MAIL_USERNAME
+    MAIL_PASSWORD: bref-ssm:/${param:UUID}/MAIL_PASSWORD
+    MAIL_ENCRYPTION: bref-ssm:/${param:UUID}/MAIL_ENCRYPTION
+    MAIL_FROM_ADDRESS: bref-ssm:/${param:UUID}/MAIL_FROM_ADDRESS
+    MAIL_FROM_NAME: ${env:APP_NAME, 'Laravel'}
+
+    # Third-Party Services Settings
+    GOOGLE_RECAPTCHA_SITE_KEY_V3: bref-ssm:/${param:UUID}/GOOGLE_RECAPTCHA_SITE_KEY_V3
+    GOOGLE_RECAPTCHA_SECRET_V3: bref-ssm:/${param:UUID}/GOOGLE_RECAPTCHA_SECRET_V3
 
   apiGateway:
     binaryMediaTypes:
@@ -53,6 +68,11 @@ provider:
   iam:
     role:
       statements:
+        # SSM Secrets
+        - Effect: Allow
+          Resource: arn:aws:ssm:${aws:region}:${aws:accountId}:parameter/${param:UUID}/*
+          Action:
+            - ssm:GetParameters
         # Laravel Cache (DynamoDB)
         - Effect: Allow
           Resource: !GetAtt CacheTable.Arn
@@ -102,7 +122,7 @@ constructs:
     extensions:
       bucket:
         Properties:
-          BucketName: "${param:UUID}-assets"
+          BucketName: '${param:UUID}-${aws:region}-assets'
 
   storage:
     type: storage
@@ -110,7 +130,7 @@ constructs:
       bucket:
 #        DeletionPolicy: Retain
         Properties:
-          BucketName: "${param:UUID}-storage"
+          BucketName: '${param:UUID}-${aws:region}-storage'
           AccessControl: Private
 
   jobs:
