@@ -32,7 +32,16 @@
     <source>
         <include>
             <directory>./app</directory>
+            <directory>./modules</directory>
         </include>
+        <exclude>
+            <directory>./modules/*/config</directory>
+            <directory>./modules/*/Database</directory>
+            <directory>./modules/*/resources</directory>
+            <directory>./modules/*/routes</directory>
+            <directory>./modules/*/Providers</directory>
+            <directory>./modules/*/Tests</directory>
+        </exclude>
     </source>
 
 </phpunit>
