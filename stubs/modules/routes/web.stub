@@ -4,14 +4,14 @@ use Illuminate\Support\Facades\Route;
 use Modules\$STUDLY_NAME$\Http\Controllers;
 
 /** # Web Routes of $STUDLY_NAME$ module */
-Route::prefix(config('$LOWER_NAME$.prefix'))->group(function() {
+Route::prefix(config('$LOWER_NAME$.prefix'))->group(static function() {
 
     /** ## Unprotected routes */
     Route::get('/', [ Controllers\$STUDLY_NAME$Controller::class, 'index' ]);
 
     /** ## Protected routes */
-    Route::middleware('auth:'.config('$LOWER_NAME$.guard'))->group(function() {
-        // TODO:
+    Route::middleware('auth:'.config('$LOWER_NAME$.guard'))->group(static function() {
+        //
     });
 
 });
