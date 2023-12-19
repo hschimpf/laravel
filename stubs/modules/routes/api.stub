@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Route;
 use Modules\$STUDLY_NAME$\Http\Controllers\Api;
 
 /** # API Routes of $STUDLY_NAME$ module */
-Route::prefix(config('$LOWER_NAME$.api-prefix'))->group(function() {
+Route::prefix(config('$LOWER_NAME$.api-prefix'))->group(static function() {
 
     /** ## Unprotected endpoints */
-    // TODO
+    //
 
     /** ## Protected endpoints */
-    Route::middleware('auth:api')->group(function() {
+    Route::middleware('auth:api')->group(static function() {
 
         Route::get('/$LOWER_NAME$', static fn(Request $request) => $request->user());
 

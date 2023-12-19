@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    // TODO:
+Route::middleware('auth:sanctum')->group(static function () {
+    //
 });
