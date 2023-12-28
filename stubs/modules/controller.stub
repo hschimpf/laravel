@@ -9,7 +9,10 @@ use Illuminate\Routing\Controller;
 final class $CLASS$ extends Controller {
 
     public function index() {
-        return inertia('$STUDLY_NAME$::Index');
+        return inertia('$STUDLY_NAME$::Index', [
+            'laravel' => app()->version(),
+            'php' => PHP_VERSION,
+        ]);
     }
 
     public function create() {
