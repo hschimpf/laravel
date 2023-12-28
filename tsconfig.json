@@ -15,7 +15,6 @@
             "ziggy-js": [ "./vendor/tightenco/ziggy" ],
             "@inertiajs/inertia-vue3": [ "./node_modules/@inertiajs/vue3" ],
 
-            "@/Test/*": [ "./modules/Test/resources/views/*" ],
             "@/*": [ "./resources/views/*" ],
             "~/*": [ "./modules/*" ],
         }
