@@ -1,13 +1,15 @@
 import './bootstrap';
 import '../css/app.css';
 
-import { createApp, h, DefineComponent } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import {createApp, DefineComponent, h} from 'vue';
+import {createInertiaApp} from '@inertiajs/vue3';
+import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
+import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 createInertiaApp({
-    title: (title: string): string => `${title} - ${import.meta.env.VITE_APP_NAME || 'Laravel'}`,
+    title: (title: string): string => title.length
+        ? `${title} - ${import.meta.env.VITE_APP_NAME || 'Laravel'}`
+        : import.meta.env.VITE_APP_NAME || 'Laravel',
 
     resolve: (name: string): Promise<DefineComponent> => {
         const module: string[] = name.split('::');
@@ -23,13 +25,15 @@ createInertiaApp({
         );
     },
 
-    setup({ el, App, props, plugin }): void {
-        createApp({ render: () => h(App, props) })
+    setup({el, App, props, plugin}): void {
+        createApp({render: () => h(App, props)})
             .use(plugin)
             .use(ZiggyVue)
             .mount(el);
     },
+
     progress: {
+        delay: 250,
         color: '#006496',
     },
 });

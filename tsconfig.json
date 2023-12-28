@@ -12,9 +12,12 @@
         "noEmit": true,
         "skipLibCheck": true,
         "paths": {
-            "@/*": ["./resources/views/*"],
-            "~/*": ["./modules/*"],
-            "ziggy-js": ["./vendor/tightenco/ziggy"]
+            "ziggy-js": [ "./vendor/tightenco/ziggy" ],
+            "@inertiajs/inertia-vue3": [ "./node_modules/@inertiajs/vue3" ],
+
+            "@/Test/*": [ "./modules/Test/resources/views/*" ],
+            "@/*": [ "./resources/views/*" ],
+            "~/*": [ "./modules/*" ],
         }
     },
     "include": [
@@ -24,6 +27,6 @@
 
         "modules/*/resources/js/**/*.ts",
         "modules/*/resources/js/**/*.d.ts",
-        "modules/*/resources/views/**/*.vue",
+        "modules/*/resources/views/**/*.vue"
     ]
 }
