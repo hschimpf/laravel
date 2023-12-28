@@ -22,6 +22,9 @@ This fantastic scaffold comes packed with powerful tools and goodies that'll mak
       settings outside the repository
     - With a plus of a deploy-ready `serverless.yml` configuration file
 - [Laravel Modules](https://github.com/nWidart/laravel-modules) with customized `stubs` for modular awesomeness
+- [Inertia.js](https://inertiajs.com/) and [Vue.js](https://vuejs.org/)
+  with [SSR](https://inertiajs.com/server-side-rendering) ready configuration and updated `resolve()` flow to also load
+  components from modules
 - [Laravel DebugBar](https://github.com/barryvdh/laravel-debugbar) to turbocharge your development workflow
 - [Pest](https://pestphp.com/) for rock-solid unit testing, complete with an updated `phpunit.xml` configuration file
   that covers your modules too
@@ -31,8 +34,7 @@ This fantastic scaffold comes packed with powerful tools and goodies that'll mak
 - [Ziggy](https://github.com/tighten/ziggy) Your magic wand for effortlessly accessing Laravel routes in
   TypeScript/JavaScript
 - [Font Awesome v6](https://fontawesome.com) Because everything looks better with icons
-- [Bootstrap v5](https://getbootstrap.com)
-- Updated [Vite](https://laravel.com/docs/10.x/vite) configuration file to seamlessly build module assets
+- [Tailwind CSS v3](https://tailwindcss.com)
 
 **But wait, there's more! This scaffold just got even mightier with these awesome additions**:
 

@@ -12,11 +12,11 @@
         "noEmit": true,
         "skipLibCheck": true,
         "paths": {
-            "ziggy-js": [ "./vendor/tightenco/ziggy" ],
             "@inertiajs/inertia-vue3": [ "./node_modules/@inertiajs/vue3" ],
+            "ziggy-js": [ "./vendor/tightenco/ziggy" ],
 
             "@/*": [ "./resources/views/*" ],
-            "~/*": [ "./modules/*" ],
+            "~/*": [ "./modules/*" ]
         }
     },
     "include": [
