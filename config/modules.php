@@ -29,11 +29,11 @@ return [
         'files'        => [
             'routes/web'      => 'routes/web.php',
             'routes/api'      => 'routes/api.php',
-            'views/index'     => 'resources/views/index.blade.php',
-            'views/master'    => 'resources/views/layouts/master.blade.php',
+            'views/index'     => 'resources/views/Index.vue',
+            // 'views/master'    => 'resources/views/layouts/master.blade.php',
             'scaffold/config' => 'config/config.php',
-            'assets/js/app'   => 'resources/assets/js/app.ts',
-            'assets/css/app'  => 'resources/assets/css/app.scss',
+            // 'assets/js/app'   => 'resources/assets/js/app.ts',
+            // 'assets/css/app'  => 'resources/assets/css/app.scss',
             // 'composer'        => 'composer.json',
             // 'vite'            => 'vite.config.js',
             // 'package'         => 'package.json',
@@ -41,20 +41,12 @@ return [
         'replacements' => [
             'routes/web'      => [ 'LOWER_NAME', 'STUDLY_NAME' ],
             'routes/api'      => [ 'LOWER_NAME', 'STUDLY_NAME' ],
-            'vite'            => [ 'LOWER_NAME' ],
-            'json'            => [ 'LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE' ],
-            'views/index'     => [ 'LOWER_NAME' ],
-            'views/master'    => [ 'LOWER_NAME', 'STUDLY_NAME' ],
+            'views/index'     => [ 'LOWER_NAME', 'STUDLY_NAME' ],
+            // 'views/master'    => [ 'LOWER_NAME', 'STUDLY_NAME' ],
             'scaffold/config' => [ 'STUDLY_NAME' ],
-            'composer'        => [
-                'LOWER_NAME',
-                'STUDLY_NAME',
-                'VENDOR',
-                'AUTHOR_NAME',
-                'AUTHOR_EMAIL',
-                'MODULE_NAMESPACE',
-                'PROVIDER_NAMESPACE',
-            ],
+            'json'            => [ 'LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE' ],
+            // 'composer'        => [ 'LOWER_NAME', 'STUDLY_NAME', 'VENDOR', 'AUTHOR_NAME', 'AUTHOR_EMAIL', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE' ],
+            // 'vite'            => [ 'LOWER_NAME' ],
         ],
         'gitkeep'      => true,
     ],
@@ -111,8 +103,8 @@ return [
             'filter'          => [ 'path' => 'Http/Middleware', 'generate' => true ],
             'request'         => [ 'path' => 'Http/Requests', 'generate' => true ],
             'provider'        => [ 'path' => 'Providers', 'generate' => true ],
-            'assets'          => [ 'path' => 'resources/assets', 'generate' => true ],
-            'lang'            => [ 'path' => 'resources/lang', 'generate' => true ],
+            'assets'          => [ 'path' => 'resources/assets', 'generate' => false ],
+            'lang'            => [ 'path' => 'resources/lang', 'generate' => false ],
             'views'           => [ 'path' => 'resources/views', 'generate' => true ],
             'test'            => [ 'path' => 'Tests/Unit', 'generate' => true ],
             'test-feature'    => [ 'path' => 'Tests/Feature', 'generate' => true ],
@@ -192,7 +184,7 @@ return [
     | Scan Path
     |--------------------------------------------------------------------------
     |
-    | Here you define which folder will be scanned. By default will scan vendor
+    | Here you define which folder will be scanned. By default, will scan vendor
     | directory. This is useful if you host the package in packagist website.
     |
     */
