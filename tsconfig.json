@@ -1,18 +1,29 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
-        "target": "es2016",
-        "strict": true, // Enable strict type-checking options
-        "skipLibCheck": true, // Skip type checking of declaration files
-        "noImplicitAny": false, // Bypass raising errors on `any` type
-        "strictNullChecks": false,
-        "esModuleInterop": true
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./resources/views/*"],
+            "~/*": ["./modules/*"],
+            "ziggy-js": ["./vendor/tightenco/ziggy"]
+        }
     },
     "include": [
-        "resources/js/**/*",
-        "modules/*/resources/assets/js/**/*"
-    ],
-    "exclude": [
-        "node_modules"
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/views/**/*.vue",
+
+        "modules/*/resources/js/**/*.ts",
+        "modules/*/resources/js/**/*.d.ts",
+        "modules/*/resources/views/**/*.vue",
     ]
 }
