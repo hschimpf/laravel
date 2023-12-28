@@ -19,8 +19,12 @@ export default defineConfig({
             },
         }),
     ],
+
     resolve: {
         alias: {
+            'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
+            '@inertiajs/inertia-vue3': path.resolve('node_modules/@inertiajs/vue3'),
+
             '@': path.resolve('resources/views'),
             '~': path.resolve('modules'),
         },
