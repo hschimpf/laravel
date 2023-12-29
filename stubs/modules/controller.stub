@@ -9,11 +9,14 @@ use Illuminate\Routing\Controller;
 final class $CLASS$ extends Controller {
 
     public function index() {
-        return view('$LOWER_NAME$::index');
+        return inertia('$STUDLY_NAME$::Index', [
+            'laravel' => app()->version(),
+            'php' => PHP_VERSION,
+        ]);
     }
 
     public function create() {
-        return view('$LOWER_NAME$::create');
+        return inertia('$STUDLY_NAME$::Create');
     }
 
     public function store(Request $request) {
@@ -21,11 +24,11 @@ final class $CLASS$ extends Controller {
     }
 
     public function show($resource) {
-        return view('$LOWER_NAME$::show');
+        return inertia('$STUDLY_NAME$::Show');
     }
 
     public function edit($resource) {
-        return view('$LOWER_NAME$::edit');
+        return inertia('$STUDLY_NAME$::Edit');
     }
 
     public function update(Request $request, $resource) {
