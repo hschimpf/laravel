@@ -12,6 +12,7 @@
         "doctrine/dbal": "^3.7",
         "guzzlehttp/guzzle": "^7.8",
         "hds-solutions/laravel-api-helpers": "^1.1",
+        "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/framework": "^10.31",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
