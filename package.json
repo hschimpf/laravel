@@ -1,10 +1,9 @@
 {
     "private": true,
     "type": "module",
-    "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.4.0"
-    },
+    "dependencies": {},
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^6.4.0",
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.2",
@@ -12,6 +11,7 @@
         "@vitejs/plugin-vue": "^5.0.0",
         "@vue/server-renderer": "^3.2.31",
         "autoprefixer": "^10.4.7",
+        "feather-icons": "^4.29",
         "laravel-vite-plugin": "^1.0.1",
         "postcss": "^8.4.14",
         "sass": "^1.69.5",
