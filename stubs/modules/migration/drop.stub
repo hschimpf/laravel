@@ -6,12 +6,12 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
 
-    public function up() {
-        Schema::dropIfExists('$TABLE$');
+    public function up(): void {
+        Schema::dropIfExists(config('$LOWER_NAME$.table-prefix').'$TABLE$');
     }
 
     public function down() {
-        Schema::create('$TABLE$', function (Blueprint $table) {
+        Schema::create(config('$LOWER_NAME$.table-prefix').'$TABLE$', static function (Blueprint $table) {
             $table->bigIncrements('id');
 $FIELDS$
             $table->timestamps();

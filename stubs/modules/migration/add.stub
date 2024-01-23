@@ -6,14 +6,14 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
 
-    public function up() {
-        Schema::table('$TABLE$', function (Blueprint $table) {
+    public function up(): void {
+        Schema::table(config('$LOWER_NAME$.table-prefix').'$TABLE$', static function (Blueprint $table) {
 $FIELDS_UP$
         });
     }
 
-    public function down() {
-        Schema::table('$TABLE$', function (Blueprint $table) {
+    public function down(): void {
+        Schema::table(config('$LOWER_NAME$.table-prefix').'$TABLE$', static function (Blueprint $table) {
 $FIELDS_DOWN$
         });
     }

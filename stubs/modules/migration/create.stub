@@ -6,16 +6,17 @@ use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
 
-    public function up() {
-        Schema::create('$TABLE$', function (Blueprint $table) {
+    public function up(): void {
+        Schema::create(config('$LOWER_NAME$.table-prefix').'$TABLE$', static function (Blueprint $table) {
             $table->id();
 $FIELDS$
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    public function down() {
-        Schema::dropIfExists('$TABLE$');
+    public function down(): void {
+        Schema::dropIfExists(config('$LOWER_NAME$.table-prefix').'$TABLE$');
     }
 
 };
