@@ -41,7 +41,7 @@
         "noFallthroughCasesInSwitch": true,
 
         "paths": {
-            "@ziggy-js": [ "./vendor/tightenco/ziggy/dist/vue.es.js" ],
+            "@ziggy-js": [ "./vendor/tightenco/ziggy" ],
 
             "@/*": [ "./resources/views/*" ],
             "~/*": [ "./modules/*" ]

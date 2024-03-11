@@ -25,7 +25,7 @@ export default defineConfig({
 
     resolve: {
         alias: {
-            '@ziggy-js': path.resolve('vendor/tightenco/ziggy/dist/vue.es.js'),
+            '@ziggy-js': path.resolve('vendor/tightenco/ziggy'),
 
             '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
 

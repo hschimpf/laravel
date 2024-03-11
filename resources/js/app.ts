@@ -4,6 +4,7 @@ import {createSSRApp, DefineComponent, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '@ziggy-js';
+import {Ziggy} from './ziggy.js';
 
 createInertiaApp({
     title: (title: string): string => title.length
@@ -27,7 +28,7 @@ createInertiaApp({
     setup({el, App, props, plugin}): void {
         createSSRApp({render: () => h(App, props)})
             .use(plugin)
-            .use(ZiggyVue)
+            .use(ZiggyVue, Ziggy)
             .mount(el);
     },
 
