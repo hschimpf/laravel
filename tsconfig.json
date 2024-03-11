@@ -41,7 +41,6 @@
         "noFallthroughCasesInSwitch": true,
 
         "paths": {
-            "@inertiajs/inertia-vue3": [ "./node_modules/@inertiajs/vue3" ],
             "@ziggy-js": [ "./vendor/tightenco/ziggy/dist/vue.es.js" ],
 
             "@/*": [ "./resources/views/*" ],

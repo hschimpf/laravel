@@ -25,9 +25,9 @@ export default defineConfig({
 
     resolve: {
         alias: {
-            '@inertiajs/inertia-vue3': path.resolve('node_modules/@inertiajs/vue3'),
-            '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
             '@ziggy-js': path.resolve('vendor/tightenco/ziggy/dist/vue.es.js'),
+
+            '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
 
             '@': path.resolve('resources/views'),
             '~': path.resolve('modules'),
