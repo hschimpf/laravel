@@ -6,8 +6,8 @@
         //   So don't change the `target` field here. It has to be
         //   at least `ES2020` for dynamic `import()`s and `import.meta` to work correctly.
         "target": "ESNext",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "useDefineForClassFields": true,
 
