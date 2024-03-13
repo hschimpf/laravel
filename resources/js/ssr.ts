@@ -15,13 +15,13 @@ createServer(page =>
             const module: string[] = name.split('::');
 
             if (module.length > 1) {
-                return resolvePageComponent(`../../modules/${module[0]}/resources/views/${module[1]}.vue`,
-                    import.meta.glob<DefineComponent>('../../modules/*/resources/views/**/*.vue'),
+                return resolvePageComponent(`../../modules/${module[0]}/resources/vue/${module[1]}.vue`,
+                    import.meta.glob<DefineComponent>('../../modules/*/resources/vue/**/*.vue'),
                 );
             }
 
-            return resolvePageComponent(`../views/${name}.vue`,
-                import.meta.glob<DefineComponent>('../views/**/*.vue'),
+            return resolvePageComponent(`../vue/${name}.vue`,
+                import.meta.glob<DefineComponent>('../vue/**/*.vue'),
             );
         },
 

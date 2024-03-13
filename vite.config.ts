@@ -29,7 +29,7 @@ export default defineConfig({
 
             '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
 
-            '@': path.resolve('resources/views'),
+            '@': path.resolve('resources/vue'),
             '~': path.resolve('modules'),
         },
     },

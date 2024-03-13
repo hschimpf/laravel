@@ -16,8 +16,8 @@
         @php
             $module = explode('::', $page['component']);
             $component = count($module) > 1
-                ? "modules/{$module[0]}/resources/views/{$module[1]}.vue"
-                : "resources/views/{$page['component']}.vue";
+                ? "modules/{$module[0]}/resources/vue/{$module[1]}.vue"
+                : "resources/vue/{$page['component']}.vue";
         @endphp
         @vite([ 'resources/js/app.ts', 'resources/css/app.css', $component ])
         @inertiaHead

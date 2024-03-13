@@ -6,10 +6,10 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 export default {
     content: [
         './resources/views/**/*.blade.php',
-        './resources/views/**/*.vue',
+        './resources/vue/**/*.vue',
 
         './modules/*/resources/views/**/*.blade.php',
-        './modules/*/resources/views/**/*.vue',
+        './modules/*/resources/vue/**/*.vue',
 
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
